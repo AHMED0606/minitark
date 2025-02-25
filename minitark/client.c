@@ -48,10 +48,12 @@ void	client(pid_t pid, char *str)
 	while (str && str[i])
 	{
 		c = str[i];
+	//	printf("%c\n",c);
 		j = 7;
 		while (j >= 0)
 		{
-			bit = c >> j & 1;
+			bit = (c >> j) & 1;
+			//printf("%d\n",bit);
 			if (bit == 0)
 			{
 				kill(pid, SIGUSR1); // Bit '0' -> SIGUSR1
@@ -76,9 +78,10 @@ int	main(int ac, char **av)
 	lent = ft_strlen(av[2]);
 	printf("%d\n", lent);
 
-	while (i < ac)
-	{
-		client(pid, av[i]);
-		i++;
-	}
+	// while (i < ac)
+	// {
+		printf("%s\n", av[2]);
+		client(pid, av[2]);
+	// 	i++;
+	// }
 }

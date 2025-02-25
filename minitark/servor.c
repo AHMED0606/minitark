@@ -5,8 +5,13 @@
 #include <stdlib.h>
 
 
+
 int g_bit_count = 0;
 int g_bits[8]; 
+
+
+   char *s = NULL;
+
 
 void action(int sig) {
     if (sig == SIGUSR1) {
@@ -15,25 +20,29 @@ void action(int sig) {
         g_bits[g_bit_count] = 1;  
     }
     g_bit_count++;
-   
-    
+
+
+    int j=0;
     if (g_bit_count == 8) {
         char character = 0;
   
         int i=0;
         while( i < 8)
         {
-            // printf("%d|\n",g_bits[i]);
+
             character |= (g_bits[i] << (7 - i)); 
             i++; 
         }
-
-     
-        printf("%c", character);
-
-       
+        s[j] = character;
+        j++;
+        if(character == '\0')
+        {
+            s[j] = '\0';
+              printf("%s\n", s);
+        }
         g_bit_count = 0;
     }
+   
 }
 int main()
 {
