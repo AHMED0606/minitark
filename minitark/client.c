@@ -27,15 +27,7 @@ long	ft_atoi(const char *nptr)
 	}
 	return (n * a);
 }
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
 void	client(pid_t pid, char *str)
 {
 	int		i;
@@ -48,40 +40,55 @@ void	client(pid_t pid, char *str)
 	while (str && str[i])
 	{
 		c = str[i];
-	//	printf("%c\n",c);
+		//printf("jjj\n");
 		j = 7;
 		while (j >= 0)
 		{
 			bit = (c >> j) & 1;
-			//printf("%d\n",bit);
+			printf("%d",bit);
 			if (bit == 0)
-			{
 				kill(pid, SIGUSR1); // Bit '0' -> SIGUSR1
-			}
 			else
-			{
 				kill(pid, SIGUSR2); // Bit '1' -> SIGUSR2
-			}
-			usleep(100);
-           j--; 
+			usleep(1000);
+			j--;
 		}
-        i++;
+		i++;
 	}
+
 }
+	
+int	chek_pid(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
 int	main(int ac, char **av)
 {
 	int pid;
-	int lent;
-	int i;
-	i = 0;
-	pid = ft_atoi(av[1]);
-	lent = ft_strlen(av[2]);
-	printf("%d\n", lent);
 
-	// while (i < ac)
-	// {
-		printf("%s\n", av[2]);
-		client(pid, av[2]);
-	// 	i++;
-	// }
+	if (ac == 1)
+		return (0);
+	if (ac == 2 || ac > 3)
+	{
+		write(2, "Eroor Arg\n", 10);
+		return (0);
+	}
+	if (chek_pid(av[1]) == 0)
+	{
+		write(2, "Eroor Pid\n", 10);
+		return (0);
+	}
+	pid = ft_atoi(av[1]);
+	client(pid, av[2]);
 }
